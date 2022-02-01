@@ -54,7 +54,7 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 </table>
 
 ### Clustering:
-Yield turned out to be divided into 13 intervals, their borders are the red dots on the x axis
+Yield turned out to be divided into 15 intervals, their borders are the red dots on the x axis
 ![clusters](https://user-images.githubusercontent.com/89735790/152046475-cabbc380-028e-49b3-8bca-397dbe69d3cc.jpg)
 
 
