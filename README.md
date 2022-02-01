@@ -1,13 +1,13 @@
 # Analysis-of-the-Russian-bond-market
 
-Propose a division into clusters by coupon yield
+**Task:**
 
 1. Determination of bond yields according to MICEX data
 2. Give an assessment of the ruble bond market by the distribution of coupon yield
 3. Propose a division into clusters by coupon yield
 
 
-Propose a division into clusters by coupon yield
+**Implemented functionality**
 
 1. Assessment of the ruble bond market by coupon yield
 2.  distribution Division of bonds into clusters by coupon yield 
