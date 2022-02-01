@@ -9,11 +9,11 @@
 
 ## **Project logic:**
 
-1.Uploading dataset 
-2.Data preprocessing 
-3.Calculation of coupon yield including tax, accumulated coupon income, future coupon income, broker and exchange commission
-4.Assessment of ruble bond market 
-5.1D Clustering using defferent distribution functions from KDE algorithm
+1. Uploading dataset 
+2. Data preprocessing 
+3. Calculation of coupon yield including tax, accumulated coupon income, future coupon income, broker and exchange commission
+4. Assessment of ruble bond market 
+5. 1D Clustering using defferent distribution functions from KDE algorithm
 
 ## **Clustering algorithm:**
 
@@ -22,9 +22,9 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 
 ## **Assumptions**:
 
-1.Analysis of ruble bonds only
-2.Bonds withput information on price and length of coupon period are not taken into account
-3.Bond with yield >= 100 are not taken into account
+1. Analysis of ruble bonds only
+2. Bonds withput information on price and length of coupon period are not taken into account
+3 .Bond with yield >= 100 are not taken into account
 
 ## **Results:**
 
