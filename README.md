@@ -30,13 +30,12 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 
 <table>
   <tr>
-    <th>Company</th>
-    <th>Contact</th> 
-    <th>Country</th>
+    <th>Indicator</th>
+    <th>Value</th> 
   </tr>
   <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td> 
+    <td>MEAN_INITIAL_NOMINAL_VALUE
+    <td>63667.232598</td> 
     <td>Germany</td>
   </tr>
   <tr>
