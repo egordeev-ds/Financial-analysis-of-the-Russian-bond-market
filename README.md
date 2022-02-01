@@ -24,7 +24,7 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 
 1. Analysis of ruble bonds only
 2. Bonds withput information on price and length of coupon period are not taken into account
-3 .Bond with yield >= 100 are not taken into account
+3. Bond with yield >= 100 are not taken into account
 
 ## **Results:**
 
@@ -54,6 +54,7 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 </table>
 
 ### Clustering:
+
 Yield turned out to be divided into 13 intervals, their borders are the red dots on the x axis
 ![clusters](https://user-images.githubusercontent.com/89735790/152046475-cabbc380-028e-49b3-8bca-397dbe69d3cc.jpg)
 
