@@ -44,17 +44,18 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
   </tr>
     <tr>
     <td>MEAN_PRICE_RUB</td>
-    <td>60438.205637</td> 
+    <td>60383.540178</td> 
   </tr>
     </tr>
     <tr>
     <td>MEAN_YIELD</td>
-    <td>610.916718</td> 
+    <td>10.917476</td> 
   </tr>
 </table>
 
 ### Clustering:
 Yield turned out to be divided into 13 intervals, their borders are the red dots on the x axis
-![clusters](https://user-images.githubusercontent.com/89735790/152028097-871aa8d8-f669-4f54-85a5-908966120f03.jpg)
+![clusters](https://user-images.githubusercontent.com/89735790/152046475-cabbc380-028e-49b3-8bca-397dbe69d3cc.jpg)
+
 
 
