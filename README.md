@@ -14,7 +14,7 @@
 3.  Graphical representation of the clusters obtained 
 
 
-**Businnes logic: **
+**Businnes logic:**
 
 1.Uploading a dataset 
 2.Data preprocessing 
