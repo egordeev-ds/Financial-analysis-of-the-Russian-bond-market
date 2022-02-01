@@ -1,13 +1,13 @@
 # Analysis-of-the-Russian-bond-market
 
-**Implemented functionality**
+## **Implemented functionality**
 
 1. Determination of bond yields according to MICEX data
 2. An assessment of ruble bond market by distribution of coupon yield
 3. Division into clusters by coupon yield
 4. Graphical representation of the clusters obtained 
 
-**Project logic:**
+## **Project logic:**
 
 1.Uploading dataset 
 2.Data preprocessing 
@@ -15,19 +15,20 @@
 4.Assessment of ruble bond market 
 5.1D Clustering using defferent distribution functions from KDE algorithm
 
-**Clustering algorithm:**
+## **Clustering algorithm:**
 
 Kernel Density Estimation (KDE)
 https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 
-**Assumptions**:
+## **Assumptions**:
 
 1.Analysis of ruble bonds only
 2.Bonds withput information on price and length of coupon period are not taken into account
 3.Bond with yield >= 100 are not taken into account
 
-**Results:**
+## **Results:**
 
+### Market Assessment:
 <table>
   <tr>
     <th>Indicator</th>
@@ -52,7 +53,7 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
   </tr>
 </table>
 
-
+### Clustering:
 ![clusters](https://user-images.githubusercontent.com/89735790/152028097-871aa8d8-f669-4f54-85a5-908966120f03.jpg)
 
 
