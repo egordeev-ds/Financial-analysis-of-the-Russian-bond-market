@@ -36,12 +36,19 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
   <tr>
     <td>MEAN_INITIAL_NOMINAL_VALUE
     <td>63667.232598</td> 
-    <td>Germany</td>
   </tr>
   <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td> 
-    <td>Mexico</td>
+    <td>MEAN_COUPONPERCENT</td>
+    <td>7.110484</td> 
+  </tr>
+    <tr>
+    <td>MEAN_PRICE_RUB</td>
+    <td>60438.205637</td> 
+  </tr>
+    </tr>
+    <tr>
+    <td>MEAN_YIELD</td>
+    <td>610.916718</td> 
   </tr>
 </table>
 
