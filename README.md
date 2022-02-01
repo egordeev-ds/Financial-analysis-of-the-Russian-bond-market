@@ -28,10 +28,12 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 
 **Results:**
 
-MEAN_INITIAL_NOMINAL_VALUE     63667.232598
-MEAN_COUPONPERCENT             7.110484
-MEAN_PRICE_RUB                 60438.205637
-MEAN_YIELD                     10.916718
+MEAN_INITIAL_NOMINAL_VALUE	63667.232598
+MEAN_COUPONPERCENT             	7.110484
+MEAN_PRICE_RUB                 	60438.205637
+MEAN_YIELD                     	10.916718!
+[image](https://user-images.githubusercontent.com/89735790/152028345-ae47d43c-8b44-4584-b3e0-faab01c2b959.png)
+
 
 ![clusters](https://user-images.githubusercontent.com/89735790/152028097-871aa8d8-f669-4f54-85a5-908966120f03.jpg)
 
