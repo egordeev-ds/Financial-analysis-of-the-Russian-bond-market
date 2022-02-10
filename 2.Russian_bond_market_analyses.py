@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 #импорты
 import pandas as pd
 import numpy as np
@@ -13,6 +7,7 @@ import requests
 import io
 
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import seaborn as sns 
 import plotly as py
 import plotly.graph_objs as go
@@ -23,22 +18,14 @@ from scipy.signal import argrelextrema
 import warnings
 warnings.filterwarnings("ignore")
 
-
-# ### 0. Подготовка датасета
-
-# In[2]:
-
+### 0. Подготовка датасета
 
 #загрузка данных
 bond_url = 'https://iss.moex.com/iss/apps/infogrid/emission/rates.csv?iss.dp=comma&iss.df=%25d.%25m.%25Y&iss.tf=%25H:%25M:%25S&iss.dtf=%25d.%25m.%25Y%25H:%25M:%25S&iss.only=rates&limit=unlimited&lang=ru'
 s=requests.get(bond_url).content
 df = pd.read_csv(io.StringIO(s.decode('windows-1251')), sep=';', header=1)
 
-
-# ### 1. Очистка данных
-
-# In[3]:
-
+### 1. Очистка данных
 
 # 1. Выбор рублевых облигаций
 
@@ -80,7 +67,6 @@ def type_changer(x):
         x_new_type = x
     return x_new_type
     
-
 #перевод строковых данных в числовые
 for col in ['INITIAL_NOMINAL_VALUE', 'COUPONPERCENT', 'COUPONVALUE',
             'COUPONDAYSPASSED', 'COUPONDAYSREMAIN','COUPONLENGTH', 'PRICE_RUB']:
@@ -92,6 +78,7 @@ for col in ['COUPONDATE_NEXT','ISSUEDATE', 'REDEMPTIONDATE']:
 
 #типы данных после исправления
 print('Типы данных после исправления:\n',df_2.dtypes, '\n')
+
 # 4. Обработка пропусков
 
 #кол-во строк до обработки пропусков
@@ -103,7 +90,7 @@ df_2['COUPONPERCENT'].replace(np.nan,0,inplace = True) # COUPONPERCENT - про�
 
 #замена прпоусков у купона в абсолбтном выражении
 condition = (df_2['COUPONPERCENT'].notna()) & (df_2['COUPONVALUE'].isna()) & (df_2['COUPONFREQUENCY'].notna())
-df_2['COUPONVALUE'].loc[condition] = (df_2['COUPONPERCENT']*df_2['INITIAL_NOMINAL_VALUE'])/df_2['COUPONFREQUENCY']# COUPONVALUE - вычисляем по формуле
+df_2['COUPONVALUE'].loc[condition] = ((df_2['COUPONPERCENT']*df_2['INITIAL_NOMINAL_VALUE'])/df_2['COUPONFREQUENCY'])/100 # COUPONVALUE - вычисляем по формуле
 
 #удаление пропусков в прочих колонках
 for col in ['COUPONFREQUENCY','COUPONDATE_NEXT','COUPONDAYSPASSED',
@@ -146,11 +133,7 @@ df_3 = df_3[['EMITENTNAME','NAME','INITIAL_NOMINAL_VALUE','COUPONPERCENT','COUPO
              'COUPONDATE_NEXT','COUPONLENGTH','PRICE_RUB','ISSUEDATE','REDEMPTIONDATE',
              'DAYSTOREDEMPTION_SINCE_START','DAYSTOREDEMPTION','HIGH_RISK']]
 
-
-# ### 2. Расчет полной купонной доходности к погашению
-
-# In[4]:
-
+### 2. Расчет полной купонной доходности к погашению
 
 #accumulated coupon income(ACI)
 df_3['ACI_period'] = df_3['COUPONDAYSPASSED']/df_3['COUPONLENGTH'] # доля периода выплаты купона (накопелнная)
@@ -164,10 +147,6 @@ df_3['FCI'] = df_3['FCI_period'] * (((df_3['COUPONPERCENT']/100)/df_3['COUPONFRE
 #tax
 df_3['TAX'] = 0.87
 df_3['TAX'].loc[df_3['INITIAL_NOMINAL_VALUE'] <= df_3['PRICE_RUB']] = 1
-
-
-# In[5]:
-
 
 #входные параметры
 N = df_3['INITIAL_NOMINAL_VALUE']
@@ -185,10 +164,6 @@ df_3['PROFIT'] = ((N-P)*tax + (FCI-ACI))/(1+broker_com+exchange_com)
 df_3['COSTS'] = P+ACI
 df_3['YIELD_FULL'] = (df_3['PROFIT']/df_3['COSTS']) * 100
 
-
-# In[6]:
-
-
 #boxplot полной купонной доходности к погашению
 plt.style.use('fivethirtyeight')
 plt.figure(figsize = (15,4))
@@ -199,21 +174,13 @@ plt.show()
 #удалим выбросы с доходностью больше 100
 df_4 = df_3[(df_3['YIELD_FULL'] <= 100)].reset_index(drop = True)
 
-
-# In[7]:
-
-
 # boxplot полной купонной доходности к погашению после удаления выбросов
 plt.figure(figsize = (15,4))
 sns.boxplot(df_4['YIELD_FULL'])
 plt.title("Анализ выбросов, шаг второй")
 plt.show()
 
-
-# ### 3. Рынок рублевых облигаций
-
-# In[8]:
-
+### 3. Рынок рублевых облигаций
 
 # эмитенты, которые выпустили больше всех облигаций
 df_4_emitents = df_4.groupby('EMITENTNAME').agg({'NAME':'count'}).reset_index().sort_values('NAME', ascending = False)
@@ -225,11 +192,7 @@ df_4.describe().loc['mean'][['INITIAL_NOMINAL_VALUE',
                              'DAYSTOREDEMPTION_SINCE_START',
                              'YIELD_FULL']]
 
-
-# #### 3.1 Распредления
-
-# In[9]:
-
+#### 3.1 Распредления
 
 #распределение COUPONPERCENT
 plt.style.use('fivethirtyeight')
@@ -238,10 +201,7 @@ df_4['COUPONPERCENT'].plot(kind = 'hist',
                            bins = 200,
                            title = 'Распределение COUPONPERCENT',
                            xlabel = 'COUPONPERCENT')
-
-
-# In[10]:
-
+plt.show()
 
 #распределение полной купонной доходности к погашению (гистограмма)
 df_4['YIELD_FULL'].plot(kind = 'hist',
@@ -249,39 +209,25 @@ df_4['YIELD_FULL'].plot(kind = 'hist',
                    bins = 200,
                    title = 'Распределение доходности к пошагению',
                    xlabel = 'YIELD_FULL')
+plt.show()
 
-
-# ### 3. Кластеризация по полной доходности к погашению
-
-# In[11]:
-
+### 3. Кластеризация купонной доходности
 
 #параметры купонной доходности
-x_init = df_4['YIELD_FULL']
-X = x_init.values.reshape(-1, 1)
+X = df_4['YIELD_FULL'].values.reshape(-1, 1)
 
-
-# #### 3.1 Распределение доходности к погашению (плотность)
-
-# In[12]:
-
+#### 3.1 Распределение купонной доходности (плотность)
 
 #параметры графика
 plt.figure(figsize = (15,4))
-true_dens = sns.distplot(x_init,
-                         bins = 20,
-                         norm_hist = True).get_lines()[0].get_data()[1] #получение y точек плотности распредления 
-plt.title(f'Distplot of {x_init.name}')
+true_dens = sns.distplot(df_4['YIELD_FULL'],bins = 200)
+plt.title(f'Distplot of YIELD')
 plt.show()
 
-
-# #### 3.2 Возможные ядерные функции (K)
-
-# In[13]:
-
+#### 3.2 Возможные ядерные оценки (K)
 
 #входные параметры
-X_plot = np.linspace(-6, 6, len(X))[:, None]
+X_plot = np.linspace(np.min(X), np.max(X), len(X)).reshape(-1,1)
 X_src = np.zeros((1, 1))
 kernels = ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]
 
@@ -299,12 +245,14 @@ def format_func(x, loc):
     else:
         return "%ih" % x
 
-#отрисовка плотностей доступных ядерных функций
+#отрисовка плотностей возможных ядерных оценок
 for i, kernel in enumerate(kernels):
     
     axi = ax.ravel()[i]
-    log_dens = KernelDensity(kernel=kernel).fit(X_src).score_samples(X_plot)
-    axi.fill(X_plot[:, 0], np.exp(log_dens), "-k", fc="#AAAAFF")
+    kde = KernelDensity(kernel=kernel).fit(X_src)
+    log_dens = kde.score_samples(X_plot)
+    
+    axi.fill(X_plot, np.exp(log_dens), "-k", fc="#AAAAFF")
     axi.text(-2.6, 0.95, kernel)
 
     axi.xaxis.set_major_formatter(plt.FuncFormatter(format_func))
@@ -314,108 +262,90 @@ for i, kernel in enumerate(kernels):
     axi.set_ylim(0, 1.05)
     axi.set_xlim(-2.9, 2.9)
 
+fig.set_size_inches([12,4])
 ax[0, 1].set_title("Available Kernels")
+plt.show()
 
-
-# #### 3.3 Ядерный оценщик YIELD_FULL (1/nh * sum(K((x-x_i/h))))
-
-# In[14]:
-
+#### 3.3 Ядерный оценщик YIELD_FULL (1/nh * sum(K((x-x_i/h))))
 
 #входные параметры
-X_plot = np.linspace(np.min(x_init), np.max(x_init), len(true_dens))
-h = 1.06 * x_init.std() * (len(x_init)**(-1/5)) #ширина полосы
+X_plot = np.linspace(np.min(X), np.max(X), len(X)).reshape(-1,1)
+h = 1.06 * X.std() * (len(X)**(-1/5)) #ширина полосы
+
 colors = ["navy", "cornflowerblue", "darkorange",'red','green','blue']
 kernels = ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]
 
-#параметры графика
-plt.figure()
+# отрисовка наблюдаемой плотности
 fig, ax = plt.subplots()
-ax.fill(X_plot.reshape(-1, 1)[:, 0],
-        true_dens,
-        fc="black", 
-        alpha=0.2,
-        label="input distribution")
+sns.distplot(X, bins = 20, norm_hist = True, color = 'black', label = 'true_dens' )
 
-lw = 2
-
-#отрисовка плотности каждого ядерного оценщика
+# отрисовка плотности каждого ядерного оценщика
 for color, kernel in zip(colors, kernels):
     
     kde = KernelDensity(kernel=kernel, bandwidth=h).fit(X)
-    log_dens = kde.score_samples(X_plot.reshape(-1, 1))
+    log_dens = kde.score_samples(X_plot)
     
-    ax.plot(X_plot.reshape(-1, 1)[:, 0],
-            np.exp(log_dens),
-            color=color,
-            lw=lw,
-            linestyle="-",
-            label=f'kernel = {kernel}')
+    ax.plot(X_plot,np.exp(log_dens),color=color,linestyle="-",label=f'kernel = {kernel}')
     
+fig.set_size_inches([12,4])
+ax.set_xlabel('YIELD')
+ax.set_ylabel('density')
+ax.set_title('Distributions by different kernels')
 ax.legend(loc='best', fontsize = 'xx-small')
+
 plt.show()
 
+# Вывод: Судя по графику, tophat лучше всего оценивает распределение
 
-# #### 3.4 Кластеризация при помощи разных kernels. выбор наилучшего.
-
-# In[15]:
-
+#### 3.4 Кластеризация при помощи разных kernels. выбор наилучшего.
 
 #общие параметры графика
 rows = len(kernels)
 cols = 1
 axs = plt.figure(figsize=(15,30),
-                 constrained_layout=True).subplots(rows,
-                                                   cols,
-                                                   sharex=True,
-                                                   sharey=True)
+                 constrained_layout=True).subplots(rows,cols,sharex=True,sharey=True)
 
 #отрисовка кластеризации при помощи каждого kernel
 for ax, kernel in zip(axs,kernels):
     
     kde = KernelDensity(kernel=kernel, bandwidth=h).fit(X)
-    log_dens = kde.score_samples(X_plot.reshape(-1, 1))
+    log_dens = kde.score_samples(X_plot)
     min_, max_ = argrelextrema(log_dens, np.less)[0], argrelextrema(log_dens, np.greater)[0]
     
     print(f'Grouping kernel {kernel}:')
+    
     if len(min_) > 1:
         print(X_plot[min_])
         ax.set_title('kernel=%s' % str(kernel))
-        ax.plot(X_plot, log_dens, 'black',
-                 X_plot[min_], log_dens[min_], 'ro')
+        ax.plot(X_plot, log_dens, 'black', X_plot[min_], log_dens[min_], 'ro')
+        
     else:
         print('error')
 
-
-# #### 3.5 Кластеризация при помощи лучшего kernel: epanechnikov
-
-# In[16]:
-
+#### 3.5 Кластеризация при помощи лучшего kernel
 
 #расчет границ интервалов кластеризации
-kde = KernelDensity(kernel='epanechnikov', bandwidth=h).fit(X)
-s = X_plot  #для удобства задания параметров гарфика
-e = kde.score_samples(s.reshape(-1, 1)) #для удобства задания параметров гарфика
-mi, ma = argrelextrema(e, np.less)[0], argrelextrema(e, np.greater)[0]
+kde = KernelDensity(kernel='tophat', bandwidth=h).fit(X)
+log_dens = kde.score_samples(X_plot) #для удобства задания параметров гарфика
+min_, max_ = argrelextrema(log_dens, np.less)[0], argrelextrema(log_dens, np.greater)[0]
 
-#отрисовка гарфика
-plt.figure(figsize=(15,5))
-plt.plot(s[:mi[0]+1], e[:mi[0]+1], 'red',
-         s[mi[0]:mi[1]+1], e[mi[0]:mi[1]+1], 'green',
-         s[mi[1]:mi[2]+1], e[mi[1]:mi[2]+1], 'blue',
-         s[mi[2]:mi[3]+1], e[mi[2]:mi[3]+1], 'yellow',
-         s[mi[3]:mi[4]+1], e[mi[3]:mi[4]+1], 'orange',
-         s[mi[4]:mi[5]+1], e[mi[4]:mi[5]+1], 'purple',
-         s[mi[5]:mi[6]+1], e[mi[5]:mi[6]+1], 'white',
-         s[mi[6]:mi[7]+1], e[mi[6]:mi[7]+1], 'lightgreen',
-         s[mi[7]:mi[8]+1], e[mi[7]:mi[8]+1], 'black',
-         s[mi[8]:mi[9]+1], e[mi[8]:mi[9]+1], 'violet',
-         s[mi[9]:mi[10]+1], e[mi[9]:mi[10]+1], 'purple',
-         s[mi[10]:mi[11]+1], e[mi[10]:mi[11]+1], 'olive',
-         s[mi[11]:mi[12]+1], e[mi[11]:mi[12]+1], 'coral',
-         s[mi[12]:mi[13]+1], e[mi[12]:mi[13]+1], 'pink',
-         s[mi[13]:], e[mi[13]:], 'gray',
-         s[mi], e[mi], 'ro')
-plt.title('Кластеризация YIELD_FULL')
+#отрисовка гарфика, визуализирующего кластеризацию
+fig, ax = plt.subplots()
+
+ax.plot(X_plot[:min_[0]+1], log_dens[:min_[0]+1])
+for i in range(len(min_)-1):
+    ax.plot(X_plot[min_[i]:min_[i+1]+1], log_dens[min_[i]:min_[i+1]+1])
+
+ax.plot(X_plot[min_[len(min_)-1]:], log_dens[min_[len(min_)-1]:])
+ax.plot(X_plot[min_], log_dens[min_], 'ro')
+
+fig.set_size_inches([15,4])
+ax.set_xlabel('YIELD')
+ax.set_title('Кластеризация YIELD_FULL')
+ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
+
 plt.show()
 
+#вывод границ
+intervals = [round(i,2) for i in X_plot[min_].reshape(1,-1)[0]]
+print('Границы кластеров:\n',intervals)
