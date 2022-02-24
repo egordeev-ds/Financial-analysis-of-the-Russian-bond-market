@@ -24,7 +24,7 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
 
 1. Analysis of ruble bonds only
 2. Bonds withput information on price and length of coupon period are not taken into account
-3. Bond with yield >= 100 are not taken into account
+3. Bonds with a difference in price and face value >= 20% are not taken into account
 
 ## **Results:**
 
@@ -36,20 +36,20 @@ https://ru.wikipedia.org/wiki/Ядерная_оценка_плотности
   </tr>
   <tr>
     <td>MEAN_INITIAL_NOMINAL_VALUE
-    <td>63667.232598</td> 
+    <td>61686.350436</td> 
   </tr>
   <tr>
     <td>MEAN_COUPONPERCENT</td>
-    <td>7.110484</td> 
+    <td>7.223393</td> 
   </tr>
     <tr>
     <td>MEAN_PRICE_RUB</td>
-    <td>60383.540178</td> 
+    <td>58943.164298</td> 
   </tr>
     </tr>
     <tr>
     <td>MEAN_YIELD</td>
-    <td>10.917476</td> 
+    <td>8.268599</td> 
   </tr>
 </table>
 
